@@ -1,0 +1,723 @@
+<!doctype html>
+<html>
+
+<head>
+  <meta charset=utf8>
+  <meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <style>
+    :root {
+      box-sizing: border-box;
+      padding-top: env(safe-area-inset-top, 0px);
+      padding-bottom: env(safe-area-inset-bottom, 0px)
+    }
+
+    html {
+      scroll-padding-top: env(safe-area-inset-top, 0px)
+    }
+  </style>
+  <style>
+    :root {
+      color-scheme: light dark;
+      --md-bg: #fff;
+      --md-text: rgba(0, 0, 0, .8);
+      --md-muted: rgba(0, 0, 0, .6);
+      --md-fill: rgba(0, 0, 0, .04);
+      --md-fill-strong: rgba(0, 0, 0, .06);
+      --md-rule: rgba(0, 0, 0, .1);
+      --md-rule-strong: rgba(0, 0, 0, .16);
+      --md-link: hsl(210 100% 45%)
+    }
+
+    @media (prefers-color-scheme:dark) {
+      :root:where(:not([data-theme="light"])) {
+        --md-bg: #0d0d0d;
+        --md-text: rgba(255, 255, 255, .85);
+        --md-muted: rgba(255, 255, 255, .6);
+        --md-fill: rgba(255, 255, 255, .06);
+        --md-fill-strong: rgba(255, 255, 255, .09);
+        --md-rule: rgba(255, 255, 255, .14);
+        --md-rule-strong: rgba(255, 255, 255, .22);
+        --md-link: hsl(210 100% 72%)
+      }
+    }
+
+    :root[data-theme="dark"] {
+      color-scheme: dark;
+      --md-bg: #0d0d0d;
+      --md-text: rgba(255, 255, 255, .85);
+      --md-muted: rgba(255, 255, 255, .6);
+      --md-fill: rgba(255, 255, 255, .06);
+      --md-fill-strong: rgba(255, 255, 255, .09);
+      --md-rule: rgba(255, 255, 255, .14);
+      --md-rule-strong: rgba(255, 255, 255, .22);
+      --md-link: hsl(210 100% 72%)
+    }
+
+    :root[data-theme="light"] {
+      color-scheme: light
+    }
+
+    @media print {
+
+      :root,
+      :root[data-theme="dark"] {
+        color-scheme: light;
+        --md-bg: #fff;
+        --md-text: rgba(0, 0, 0, .8);
+        --md-muted: rgba(0, 0, 0, .6);
+        --md-fill: rgba(0, 0, 0, .04);
+        --md-fill-strong: rgba(0, 0, 0, .06);
+        --md-rule: rgba(0, 0, 0, .1);
+        --md-rule-strong: rgba(0, 0, 0, .16);
+        --md-link: hsl(210 100% 45%)
+      }
+    }
+
+    body {
+      background: var(--md-bg);
+      color: var(--md-text);
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      font: 14px/1.55 -apple-system, BlinkMacSystemFont, 'SF Pro', 'Segoe UI', sans-serif;
+      overflow-wrap: break-word
+    }
+
+    body>:first-child {
+      margin-top: 0
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      margin: 6px 0 0;
+      line-height: 1.25;
+      font-weight: 600;
+      text-wrap: balance
+    }
+
+    h1 {
+      font-size: 1.35em
+    }
+
+    h2 {
+      font-size: 1.15em;
+      color: var(--md-muted)
+    }
+
+    h3,
+    h4,
+    h5,
+    h6 {
+      font-size: 1em
+    }
+
+    p,
+    ul,
+    ol,
+    blockquote,
+    table,
+    pre,
+    hr {
+      margin: 0
+    }
+
+    strong {
+      font-weight: 600
+    }
+
+    a {
+      color: var(--md-link);
+      text-decoration: none
+    }
+
+    a:hover {
+      text-decoration: underline
+    }
+
+    ul,
+    ol {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      padding-left: 22px
+    }
+
+    ul {
+      list-style: disc
+    }
+
+    ol {
+      list-style: decimal
+    }
+
+    :is(li, td, th)>*+:is(p, ul, ol, blockquote) {
+      margin-top: 6px
+    }
+
+    blockquote {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      border-left: 2px solid var(--md-rule);
+      padding-left: 10px;
+      color: var(--md-muted)
+    }
+
+    :not(pre)>code {
+      background: var(--md-fill);
+      padding: 1px 3px;
+      border-radius: 4px;
+      font: .92em 'SF Mono', ui-monospace, Menlo, Consolas, monospace
+    }
+
+    a>code {
+      background: none;
+      color: inherit
+    }
+
+    pre {
+      background: var(--md-fill);
+      padding: 10px 12px;
+      border-radius: 6px;
+      overflow-x: auto;
+      font: 12px/1.5 'SF Mono', ui-monospace, Menlo, Consolas, monospace;
+      margin-block: 4px
+    }
+
+    pre code {
+      background: none;
+      padding: 0;
+      font: inherit
+    }
+
+    table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 2px;
+      font: inherit
+    }
+
+    th,
+    td {
+      padding: 6px 8px;
+      border-radius: 3px;
+      text-align: left;
+      vertical-align: top
+    }
+
+    th {
+      background: var(--md-fill-strong);
+      font-weight: 600
+    }
+
+    td {
+      background: var(--md-fill)
+    }
+
+    :is(th, td) :not(pre)>code {
+      background: transparent
+    }
+
+    hr {
+      border: 0;
+      border-top: 1px solid var(--md-rule-strong);
+      margin-block: 10px
+    }
+
+    img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 4px
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Rancangan SPK Penilaian Prestasi Siswa: Integrasi AHP + SMART</h1>
+  <p>Acuan: Herdiana dkk. (2024), <em>Implementasi Metode SMART dalam SPK Penilaian Prestasi Belajar Siswa pada SMK
+      Mandiri</em>.
+    Perbedaan utama: <strong>bobot kriteria ditentukan dengan AHP</strong>, bukan ditetapkan manual.</p>
+  <hr>
+  <h2>1. Fiksasi Model (Integrasi AHP dan SMART)</h2>
+  <h3>1.1 Alasan integrasi</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>Aspek</th>
+        <th>Jurnal acuan</th>
+        <th>Rancangan ini</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Penentuan bobot</td>
+        <td>Manual (40/20/15/15/10) tanpa dasar perhitungan</td>
+        <td><strong>AHP</strong>: perbandingan berpasangan + uji konsistensi</td>
+      </tr>
+      <tr>
+        <td>Perankingan</td>
+        <td>SMART</td>
+        <td>SMART (tetap)</td>
+      </tr>
+    </tbody>
+  </table>
+  <p>AHP unggul di bobot (terstruktur, ada uji konsistensi CR), sedangkan SMART sederhana dan cepat untuk menghitung
+    nilai tiap alternatif. Keduanya saling melengkapi.</p>
+  <h3>1.2 Kriteria dan tipe</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>Kode</th>
+        <th>Kriteria</th>
+        <th>Tipe</th>
+        <th>Sumber data</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>K1</td>
+        <td>Pengetahuan</td>
+        <td>Benefit</td>
+        <td>Nilai rapor (dikonversi ke skor parameter)</td>
+      </tr>
+      <tr>
+        <td>K2</td>
+        <td>Keterampilan</td>
+        <td>Benefit</td>
+        <td>Nilai rapor</td>
+      </tr>
+      <tr>
+        <td>K3</td>
+        <td>Sikap</td>
+        <td>Benefit</td>
+        <td>Skor sikap</td>
+      </tr>
+      <tr>
+        <td>K4</td>
+        <td>Kehadiran</td>
+        <td>Benefit</td>
+        <td>Jumlah tanpa keterangan (dikonversi ke skor)</td>
+      </tr>
+      <tr>
+        <td>K5</td>
+        <td>Ekstrakurikuler</td>
+        <td>Benefit</td>
+        <td>Kategori keikutsertaan/prestasi</td>
+      </tr>
+    </tbody>
+  </table>
+  <p>Karena semua nilai sudah dikonversi ke <strong>skor parameter</strong> (skala 20-100), semuanya bertipe benefit.
+  </p>
+  <h3>1.3 Alur model terintegrasi</h3>
+  <pre class="mermaid">flowchart TD
+    A[Tentukan kriteria] --&gt; B[Matriks perbandingan berpasangan AHP&lt;br/&gt;skala Saaty 1-9]
+    B --&gt; C[Hitung bobot / eigenvector]
+    C --&gt; D{CR &lt; 0,1 ?}
+    D -- Tidak --&gt; B
+    D -- Ya --&gt; E[Bobot AHP = bobot ternormalisasi SMART]
+    F[Input data siswa + skor parameter] --&gt; G[Hitung nilai utility SMART]
+    E --&gt; H[Nilai akhir = Σ wj · uj]
+    G --&gt; H
+    H --&gt; I[Perankingan terbesar ke terkecil]
+    I --&gt; J[Rekomendasi siswa berprestasi]
+</pre>
+  <h3>1.4 Tahapan perhitungan</h3>
+  <p><strong>Tahap A: AHP (menentukan bobot)</strong></p>
+  <ol>
+    <li>
+      <p>Susun matriks perbandingan berpasangan <strong>A</strong> (n × n), dengan <code>a_ij</code> dari skala Saaty
+        1-9 dan <code>a_ji = 1/a_ij</code>.</p>
+    </li>
+    <li>
+      <p>Normalisasi: bagi tiap elemen dengan jumlah kolomnya.</p>
+    </li>
+    <li>
+      <p>Bobot <code>w_i</code> = rata-rata tiap baris matriks ternormalisasi (total bobot = 1).</p>
+    </li>
+    <li>
+      <p>Uji konsistensi:</p>
+      <ul>
+        <li><code>λmax</code> = rata-rata dari (A·w)_i / w_i</li>
+        <li><code>CI = (λmax − n) / (n − 1)</code></li>
+        <li><code>CR = CI / RI</code>, konsisten jika <strong>CR &lt; 0,1</strong></li>
+      </ul>
+      <p>Nilai RI: n=3 → 0,58 | n=4 → 0,90 | <strong>n=5 → 1,12</strong> | n=6 → 1,24</p>
+    </li>
+  </ol>
+  <p><strong>Tahap B: SMART (menilai alternatif)</strong></p>
+  <ol>
+    <li><strong>Normalisasi bobot</strong>: sudah terpenuhi karena bobot AHP berjumlah 1, sehingga langkah ini pada
+      jurnal digantikan hasil AHP.</li>
+    <li><strong>Skor parameter</strong> tiap kriteria (tabel konversi pada jurnal: Tabel 3).</li>
+    <li><strong>Utility</strong> (kriteria benefit): <code>u_j(a_i) = (c_out − c_min) / (c_max − c_min) × 100</code>
+    </li>
+    <li><strong>Nilai akhir</strong>: <code>u(a_i) = Σ w_j · u_j(a_i)</code></li>
+    <li><strong>Ranking</strong> dari nilai akhir terbesar ke terkecil.</li>
+  </ol>
+  <blockquote>
+    <p><strong>Catatan penting dari jurnal acuan</strong> (sebaiknya dipahami sebelum presentasi):</p>
+    <ul>
+      <li>Persamaan (2) di jurnal tertulis <code>(Cmax − Cout)/(Cmax − Cmin)</code>, yaitu bentuk untuk kriteria
+        <em>cost</em>. Padahal hasil pada Tabel 5 sebenarnya memakai bentuk <em>benefit</em>
+        <code>(Cout − Cmin)/(Cmax − Cmin)</code> dengan Cmin=20 dan Cmax=100 (contoh: skor 60 → 50; skor 70 → 62,5).
+      </li>
+      <li>Angka pada abstrak (152,5; 143,75; 141,25) tidak sesuai dengan Tabel 7 (72,5; 58,75; 57,5). Gunakan angka
+        Tabel 7 sebagai acuan verifikasi.</li>
+      <li>Tabel 3 bagian Pengetahuan tidak memuat rentang nilai ≥ 80, sehingga perlu dilengkapi pada sistem Anda.</li>
+    </ul>
+  </blockquote>
+  <h3>1.5 Validasi model</h3>
+  <p>Uji sistem dengan data jurnal (A1-A5) dengan bobot jurnal dimasukkan manual. Hasil harus sama: <strong>A1 = 55; A2
+      = 58,75; A3 = 56,25; A4 = 72,5; A5 = 57,5</strong>. Setelah cocok, ganti bobot dengan hasil AHP dan tunjukkan
+    perubahan ranking sebagai bahan pembahasan (analisis sensitivitas).</p>
+  <hr>
+  <h2>2. Desain Sistem / Arsitektur Aplikasi</h2>
+  <h3>2.1 Arsitektur (MVC berlapis, web-based)</h3>
+  <pre class="mermaid">flowchart LR
+    U[Pengguna&lt;br/&gt;Admin / Guru / Kepsek] --&gt; V[View&lt;br/&gt;Blade/HTML + Bootstrap + Chart.js]
+    V --&gt; C[Controller]
+    C --&gt; S1[AHPService&lt;br/&gt;bobot + CR]
+    C --&gt; S2[SMARTService&lt;br/&gt;utility + nilai akhir + ranking]
+    S1 --&gt; M[Model / ORM]
+    S2 --&gt; M
+    M --&gt; DB[(MySQL)]
+</pre>
+  <p>Logika perhitungan dipisah di <strong>Service</strong>, bukan di controller, sehingga mudah diuji dan dijelaskan.
+  </p>
+  <h3>2.2 Aktor dan hak akses</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>Aktor</th>
+        <th>Hak akses</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Admin</td>
+        <td>Kelola user, kriteria, siswa, parameter</td>
+      </tr>
+      <tr>
+        <td>Guru / Wali kelas</td>
+        <td>Input nilai siswa, lihat hasil</td>
+      </tr>
+      <tr>
+        <td>Kepala sekolah (pengambil keputusan)</td>
+        <td>Isi perbandingan AHP, lihat ranking dan laporan</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3>2.3 Modul dan fitur</h3>
+  <ol>
+    <li>Login dan manajemen user</li>
+    <li>Master kriteria (kode, nama, tipe)</li>
+    <li><strong>Modul AHP</strong>: form matriks perbandingan, hasil bobot, λmax, CI, CR, peringatan bila CR ≥ 0,1</li>
+    <li>Master siswa dan periode</li>
+    <li>Master parameter (rentang nilai ke skor)</li>
+    <li>Input penilaian siswa</li>
+    <li><strong>Modul SMART</strong>: hitung utility, nilai akhir, ranking</li>
+    <li>Dashboard grafik dan laporan cetak (PDF/Excel)</li>
+  </ol>
+  <h3>2.4 Alur pengguna</h3>
+  <p>Login → tetapkan kriteria → isi perbandingan AHP → cek CR → simpan bobot → input nilai siswa → proses SMART → lihat
+    ranking dan grafik → cetak laporan.</p>
+  <hr>
+  <h2>3. Persiapan Database</h2>
+  <h3>3.1 ERD</h3>
+  <pre class="mermaid">erDiagram
+    USERS ||--o{ AHP_SESSIONS : membuat
+    PERIODS ||--o{ AHP_SESSIONS : memiliki
+    AHP_SESSIONS ||--o{ AHP_COMPARISONS : berisi
+    AHP_SESSIONS ||--o{ CRITERIA_WEIGHTS : menghasilkan
+    CRITERIA ||--o{ CRITERIA_WEIGHTS : dibobot
+    CRITERIA ||--o{ AHP_COMPARISONS : dibandingkan
+    CRITERIA ||--o{ PARAMETERS : memiliki
+    STUDENTS ||--o{ ASSESSMENTS : dinilai
+    CRITERIA ||--o{ ASSESSMENTS : untuk
+    PERIODS ||--o{ ASSESSMENTS : pada
+    STUDENTS ||--o{ RESULTS : hasil
+    PERIODS ||--o{ RESULTS : pada
+</pre>
+  <h3>3.2 Struktur tabel inti (ringkas)</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>Tabel</th>
+        <th>Kolom utama</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>users</code></td>
+        <td>id, name, email, password, role</td>
+      </tr>
+      <tr>
+        <td><code>periods</code></td>
+        <td>id, tahun_ajaran, semester, is_active</td>
+      </tr>
+      <tr>
+        <td><code>criteria</code></td>
+        <td>id, kode, nama, tipe (benefit/cost)</td>
+      </tr>
+      <tr>
+        <td><code>ahp_sessions</code></td>
+        <td>id, period_id, user_id, lambda_max, ci, cr, is_consistent</td>
+      </tr>
+      <tr>
+        <td><code>ahp_comparisons</code></td>
+        <td>id, session_id, criteria_a_id, criteria_b_id, nilai</td>
+      </tr>
+      <tr>
+        <td><code>criteria_weights</code></td>
+        <td>id, session_id, criteria_id, bobot</td>
+      </tr>
+      <tr>
+        <td><code>students</code></td>
+        <td>id, nis, nama, kelas, jurusan</td>
+      </tr>
+      <tr>
+        <td><code>parameters</code></td>
+        <td>id, criteria_id, label, batas_min, batas_max, skor</td>
+      </tr>
+      <tr>
+        <td><code>assessments</code></td>
+        <td>id, student_id, criteria_id, period_id, nilai_asli, skor</td>
+      </tr>
+      <tr>
+        <td><code>results</code></td>
+        <td>id, student_id, period_id, nilai_akhir, ranking</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3>3.3 Contoh DDL (tabel kunci)</h3>
+  <pre><code class="language-sql">CREATE TABLE criteria (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  kode VARCHAR(5) NOT NULL UNIQUE,
+  nama VARCHAR(50) NOT NULL,
+  tipe ENUM(&#39;benefit&#39;,&#39;cost&#39;) NOT NULL DEFAULT &#39;benefit&#39;
+);
+
+CREATE TABLE ahp_comparisons (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  session_id INT NOT NULL,
+  criteria_a_id INT NOT NULL,
+  criteria_b_id INT NOT NULL,
+  nilai DECIMAL(6,3) NOT NULL,       -- skala Saaty (1/9 s.d. 9)
+  UNIQUE (session_id, criteria_a_id, criteria_b_id),
+  FOREIGN KEY (session_id) REFERENCES ahp_sessions(id),
+  FOREIGN KEY (criteria_a_id) REFERENCES criteria(id),
+  FOREIGN KEY (criteria_b_id) REFERENCES criteria(id)
+);
+
+CREATE TABLE criteria_weights (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  session_id INT NOT NULL,
+  criteria_id INT NOT NULL,
+  bobot DECIMAL(8,6) NOT NULL,
+  FOREIGN KEY (session_id) REFERENCES ahp_sessions(id),
+  FOREIGN KEY (criteria_id) REFERENCES criteria(id)
+);
+</code></pre>
+  <h3>3.4 Data awal (seeder)</h3>
+  <ul>
+    <li>5 kriteria (K1-K5)</li>
+    <li>Tabel parameter sesuai jurnal (Tabel 3)</li>
+    <li>5 siswa contoh (A1-A5) dan nilainya dari jurnal, untuk validasi model</li>
+  </ul>
+  <hr>
+  <h2>4. Persiapan Environment Pemrograman</h2>
+  <h3>4.1 Rekomendasi stack</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>Komponen</th>
+        <th>Pilihan</th>
+        <th>Catatan</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Bahasa</td>
+        <td>PHP 8.2+</td>
+        <td>Sama dengan jurnal, versi lebih baru</td>
+      </tr>
+      <tr>
+        <td>Framework</td>
+        <td><strong>Laravel 11</strong> (alternatif: CodeIgniter 4)</td>
+        <td>Jurnal memakai CI3 yang sudah usang</td>
+      </tr>
+      <tr>
+        <td>Database</td>
+        <td>MySQL 8 / MariaDB</td>
+        <td>Sama dengan jurnal</td>
+      </tr>
+      <tr>
+        <td>Front-end</td>
+        <td>Bootstrap 5 / AdminLTE, Chart.js</td>
+        <td>Grafik ranking</td>
+      </tr>
+      <tr>
+        <td>Laporan</td>
+        <td>DomPDF, Laravel Excel</td>
+        <td>Cetak hasil</td>
+      </tr>
+      <tr>
+        <td>Testing</td>
+        <td>PHPUnit / Pest</td>
+        <td>Uji perhitungan AHP dan SMART</td>
+      </tr>
+      <tr>
+        <td>Version control</td>
+        <td>Git + GitHub</td>
+        <td>Riwayat pengembangan</td>
+      </tr>
+    </tbody>
+  </table>
+  </code></pre>
+  <hr>
+  <h2>5. Rencana Pengerjaan</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Tahap</th>
+        <th>Kegiatan</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>1</td>
+        <td>Finalisasi kriteria dan matriks AHP (wawancara/kuesioner pengambil keputusan)</td>
+      </tr>
+      <tr>
+        <td>2</td>
+        <td>Migrasi database dan seeder</td>
+      </tr>
+      <tr>
+        <td>3</td>
+        <td>Implementasi AHPService dan SMARTService beserta unit test</td>
+      </tr>
+      <tr>
+        <td>4</td>
+        <td>CRUD master data dan input nilai</td>
+      </tr>
+      <tr>
+        <td>5</td>
+        <td>Modul AHP dan SMART di antarmuka, dashboard, laporan</td>
+      </tr>
+      <tr>
+        <td>6</td>
+        <td>Pengujian (validasi dengan data jurnal, black-box), evaluasi dan revisi</td>
+      </tr>
+    </tbody>
+  </table>
+  <h2>6. Saran Poin untuk Presentasi ke Dosen</h2>
+  <ol>
+    <li>Jelaskan <strong>mengapa AHP</strong>: bobot punya dasar dan dapat diuji konsistensinya.</li>
+    <li>Tunjukkan <strong>validasi</strong> dengan data jurnal (hasil harus sama persis).</li>
+    <li>Tunjukkan <strong>perbandingan ranking</strong> bobot manual vs bobot AHP.</li>
+    <li>Sebutkan <strong>catatan koreksi</strong> dari jurnal acuan (persamaan utility dan angka abstrak) sebagai bukti
+      telaah kritis.</li>
+    <li>Sebutkan keterbatasan: penilaian AHP bersifat subjektif (bergantung responden), sehingga sebaiknya diisi lebih
+      dari satu pengambil keputusan (rata-rata geometrik).</li>
+  </ol>
+
+
+  <!--claude-mermaid-runtime-begin:3477-->
+  <style>
+    .mermaid-diagram {
+      margin-block: 4px
+    }
+
+    .mermaid-diagram svg {
+      display: block;
+      margin: 0 auto;
+      max-width: 100%;
+      height: auto
+    }
+  </style>
+  <script src="/_runtime/mermaid-11.16.1.min.js"></script>
+  <script>(function () {
+      var CFG = { "palettes": { "light": { "surface": "#f4efe4", "text": "#42392e", "line": "#8a7f6d", "border": "#7a6c52", "bg": "#fffdf8" }, "dark": { "surface": "#262b34", "text": "#f2f3f5", "line": "#a8adb8", "border": "#9aa4b8", "bg": "#1f232b" } } };
+      if (typeof mermaid === 'undefined') return;
+      var pres = Array.prototype.slice.call(document.querySelectorAll('pre.mermaid')).filter(function (p) { if (p.hasAttribute('data-claude-mermaid-claimed')) return false; p.setAttribute('data-claude-mermaid-claimed', '1'); return true; });
+      if (!pres.length) return;
+      var mq = window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)') : null;
+      var root = document.documentElement;
+      var items = pres.map(function (pre) {
+        var mount = document.createElement('div'); mount.className = 'mermaid-diagram';
+        return { pre: pre, mount: mount, src: pre.textContent || '' };
+      });
+      var seq = 0;
+      var renderGen = 0;
+      var lastKey = '';
+      function pageBg(fallback) {
+        var els = [document.body, document.documentElement];
+        for (var i = 0; i < els.length; i++) {
+          var c = els[i] && getComputedStyle(els[i]).backgroundColor;
+          if (c && c !== 'transparent' && c !== 'rgba(0, 0, 0, 0)') return c;
+        }
+        return fallback;
+      }
+      function render() {
+        var theme = root.getAttribute('data-theme');
+        var dark = theme === 'dark' || (!!(mq && mq.matches) && theme !== 'light');
+        var pal = dark ? CFG.palettes.dark : CFG.palettes.light;
+        var bg = pageBg(pal.bg);
+        var key = (dark ? 'd' : 'l') + '|' + bg;
+        if (key === lastKey) return;
+        lastKey = key;
+        var gen = ++renderGen;
+        var font = getComputedStyle(document.body).fontFamily || 'sans-serif';
+        var nat = { useMaxWidth: false };
+        mermaid.initialize({
+          startOnLoad: false, securityLevel: 'strict', theme: 'base',
+          flowchart: nat, sequence: nat, er: nat, state: nat, class: nat, pie: nat,
+          gantt: nat, journey: nat, timeline: nat, gitGraph: nat, mindmap: nat, xyChart: nat,
+          quadrantChart: nat, sankey: nat, c4: nat, requirement: nat, block: nat,
+          packet: nat, kanban: nat, architecture: nat, radar: nat,
+          themeVariables: {
+            background: bg, mainBkg: pal.surface, primaryColor: pal.surface,
+            primaryTextColor: pal.text, lineColor: pal.line, primaryBorderColor: pal.border,
+            nodeBorder: pal.border, clusterBorder: pal.border, edgeLabelBackground: bg,
+            clusterBkg: 'rgba(127,127,127,0.07)', titleColor: pal.text,
+            darkMode: dark, rowOdd: bg, rowEven: 'rgba(127,127,127,0.07)',
+            attributeBackgroundColorOdd: bg, attributeBackgroundColorEven: 'rgba(127,127,127,0.07)',
+            fontSize: '16px', fontFamily: font
+          },
+          themeCSS: '.node rect, .node circle, .node polygon, .node path, .cluster rect { stroke-width: 2px; }'
+        });
+        items.forEach(function (it) {
+          var id = 'claude-mermaid-' + seq++;
+          mermaid.render(id, it.src).then(function (r) {
+            if (gen !== renderGen) return;
+            var prev = it.pre.previousElementSibling;
+            if (prev && prev.className === 'mermaid-diagram' && prev !== it.mount) return;
+            it.mount.innerHTML = r.svg;
+            if (!it.mount.parentNode) it.pre.parentNode.insertBefore(it.mount, it.pre);
+            it.pre.style.display = 'none';
+          }, function () {
+            var scratch = document.getElementById(id);
+            if (scratch) scratch.parentNode.removeChild(scratch);
+            scratch = document.getElementById('d' + id);
+            if (scratch) scratch.parentNode.removeChild(scratch);
+            if (gen !== renderGen) return;
+            if (it.mount.parentNode) it.mount.parentNode.removeChild(it.mount);
+            it.pre.style.display = '';
+          });
+        });
+      }
+      render();
+      if (mq && mq.addEventListener) mq.addEventListener('change', render);
+      if (typeof MutationObserver !== 'undefined') new MutationObserver(render).observe(root, { attributes: true, attributeFilter: ['data-theme'] });
+    })();</script>
+
+</body>
+
+</html>
